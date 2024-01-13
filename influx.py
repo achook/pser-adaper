@@ -11,17 +11,17 @@ class DBClient:
         self.org = org
         self.bucket = bucket
 
-    def write_if_keys_in_dict(self, data: dict, keys: list) -> dict:
-        point = Point("data")
-        raw_data = {}
+    def write_if_keys_in_dict(self, data: dict, keys: list) -> list:
+        point = Point("env")
+        raw_data = []
 
         for key in keys:
             if key in data:
-                point = point.field(key, data[key])
-                raw_data[key] = data[key]
+                point = point.field(key, float(data[key]))
+                raw_data.append(float(data[key]))
             else:
                 logger.log_warning("Problem parsing received JSON data - no " + key + " field")
-                raw_data[key] = None
+                raw_data.append(None)
 
         self.write_api.write(bucket=self.bucket, org=self.org, record=point)
 
