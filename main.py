@@ -45,7 +45,8 @@ def handle_new_data(raw_data: str) -> None:
     )
 
     # Check if the data is in bounds and if the last alarm was more than 10 minutes ago
-    if not check_if_data_in_bounds(temperature, humidity, luminosity) and (datetime.now() - last_silenced).seconds > 600:
+    if (not check_if_data_in_bounds(temperature, humidity, luminosity)
+            and (datetime.now() - last_silenced).seconds > 600):
         logger.log_info("Data out of bounds, sending alarm")
         mqtt_client.publish(MQTT_ALARM_TOPIC, "ALARM")
     else:

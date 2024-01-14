@@ -1,7 +1,7 @@
 import logger
 
-from influxdb_client import InfluxDBClient, Point, WritePrecision
-from influxdb_client.client.write_api import SYNCHRONOUS, ASYNCHRONOUS
+from influxdb_client import InfluxDBClient, Point
+from influxdb_client.client.write_api import SYNCHRONOUS
 
 
 class DBClient:
@@ -16,7 +16,7 @@ class DBClient:
         raw_data = []
 
         for key in keys:
-            if key in data:
+            if key in data and data[key] is not None:
                 point = point.field(key, float(data[key]))
                 raw_data.append(float(data[key]))
             else:
