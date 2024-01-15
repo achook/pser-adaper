@@ -13,17 +13,17 @@ last_silenced = datetime.now() - timedelta(minutes=10)
 influx_client = DBClient(INFLUX_ADDRESS, INFLUX_PORT, INFLUX_USER, INFLUX_TOKEN, INFLUX_ORG, INFLUX_BUCKET)
 
 
-def check_if_data_in_bounds(temperature: float, humidity: float, luminosity: float) -> bool:
+def check_if_data_in_bounds(temperature: float|None, humidity: float|None, luminosity: float|None) -> bool:
     # Check if the temperature is in bounds
-    if temperature < 18 or temperature > 28:
+    if temperature is not None and (temperature < 18 or temperature > 28):
         return False
 
     # Check if the humidity is in bounds
-    if humidity < 20 or humidity > 80:
+    if humidity is not None and (humidity < 20 or humidity > 80):
         return False
 
     # Check if the luminosity is in bounds
-    if luminosity < 500 or luminosity > 1000:
+    if luminosity is not None and (luminosity < 500 or luminosity > 1000):
         return False
 
     # If all checks passed, return true
@@ -50,7 +50,7 @@ def handle_new_data(raw_data: str) -> None:
         logger.log_info("Data out of bounds, sending alarm")
         mqtt_client.publish(MQTT_ALARM_TOPIC, "ALARM")
     else:
-        logger.log_info("Data in bounds, no alarm needed")
+        logger.log_info("No alarm needed")
         mqtt_client.publish(MQTT_ALARM_TOPIC, "OK")
 
 

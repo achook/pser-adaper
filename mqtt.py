@@ -33,10 +33,10 @@ def _default_on_connect(client: mqtt.Client, userdata: any, flags, rc: int) -> N
     else:
         logger.log_fatal("Connect failed with code: " + str(rc), rc)
 
-    # Connect to the data and alarm topics
+    # Connect to the data and silence topics
     client.subscribe(MQTT_DATA_TOPIC)
-    client.subscribe(MQTT_ALARM_TOPIC)
-    logger.log_info("Subscribed to data topic: " + MQTT_DATA_TOPIC + " and alarm topic: " + MQTT_ALARM_TOPIC)
+    client.subscribe(MQTT_SILENCE_TOPIC)
+    logger.log_info("Subscribed to data topic: " + MQTT_DATA_TOPIC)
 
 
 def _default_on_message(new_data_hander: callable, silent_alarm_handler: callable,

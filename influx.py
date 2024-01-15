@@ -26,3 +26,4 @@ class DBClient:
         self.write_api.write(bucket=self.bucket, org=self.org, record=point)
 
         return raw_data
+    
